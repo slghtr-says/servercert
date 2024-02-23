@@ -295,6 +295,8 @@ The Definitions found in the CA/Browser Forum's Network and Certificate System S
 
 **CA Key Pair**: A Key Pair where the Public Key appears as the Subject Public Key Info in one or more Root CA Certificate(s) and/or Subordinate CA Certificate(s).
 
+**Canonical Authorization Domain Name**: The domain name found within the RDATA value of a CNAME record located at an FQDN composed of an Authorization Domain Name that is prefixed with a Domain Label that begins with an underscore character.
+
 **Certificate**: An electronic document that uses a digital signature to bind a public key and an identity.
 
 **Certificate Data**: Certificate requests and data related thereto (whether obtained from the Applicant or otherwise) in the CA's possession or control or to which the CA has access.
@@ -394,8 +396,6 @@ The Definitions found in the CA/Browser Forum's Network and Certificate System S
 **Private Key**: The key of a Key Pair that is kept secret by the holder of the Key Pair, and that is used to create Digital Signatures and/or to decrypt electronic records or files that were encrypted with the corresponding Public Key.
 
 **Pending Prohibition​​**: The use of a behavior described with this label is highly discouraged, as it is planned to be deprecated and will likely be designated as MUST NOT in the future.
-
-**Prefixed Canonical Authorization Domain Name**: The domain contained within the RDATA value of a CNAME record from an Authorization Domain Name that is prefixed with a Domain Label that begins with an underscore character.
 
 **Public Key**: The key of a Key Pair that may be publicly disclosed by the holder of the corresponding Private Key and that is used by a Relying Party to verify Digital Signatures created with the holder's corresponding Private Key and/or to encrypt messages so that they can be decrypted only with the holder's corresponding Private Key.
 
@@ -758,16 +758,16 @@ This method has been retired and MUST NOT be used. Prior validations using this 
 
 ##### 3.2.2.4.7 DNS Change
 
-Confirming the Applicant's control over the FQDN by confirming the presence of a Random Value or Request Token for either in a DNS CNAME, TXT or CAA record for 1) an Authorization Domain Name; or 2) an Authorization Domain Name that is prefixed with a Domain Label that begins with an underscore character; or 3) a Prefixed Canonical Authorization Domain Name.
+Confirming the Applicant's control over the FQDN by confirming the presence of a Random Value or Request Token for either in a DNS CNAME, TXT or CAA record for 1) an Authorization Domain Name; or 2) an Authorization Domain Name that is prefixed with a Domain Label that begins with an underscore character; or 3) a Canonical Authorization Domain Name.
 
 If a Random Value is used, the CA SHALL provide a Random Value unique to the Certificate request and SHALL not use the Random Value after
 
   i. 30 days or
   ii. if the Applicant submitted the Certificate request, the time frame permitted for reuse of validated information relevant to the Certificate (such as in [Section 4.2.1](#421-performing-identification-and-authentication-functions) of these Guidelines or Section 11.14.3 of the EV Guidelines).
 
-CAs MAY operate domains for the purpose of assisting Applicants with this validation, and MAY instruct Applicants to add a CNAME record containing a Prefixed Canonical Authorization Domain Name. If the CA does so, the CA SHALL 
-  i. ensure that each Prefixed Canonical Authorization Domain Name is used for a unique Applicant, and not shared across multiple Applicants; and 
-  ii. complete the validation within the TTL of the CNAME record, or 8 hours, whichever is lesser; and
+CAs MAY operate domains for the purpose of assisting Applicants with this validation, and MAY instruct Applicants to add a CNAME record containing a Canonical Authorization Domain Name controlled by the CA. If the CA does so, the CA SHALL 
+  i. ensure that each Canonical Authorization Domain Name is used for a unique Applicant, and not shared across multiple Applicants; and 
+  ii. complete the validation within 8 hours; and
   iii. restrict the DNS record types in the CA operated DNS zone to those required for confirming the Applicant’s control over the FQDN.
 
 **Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names.
