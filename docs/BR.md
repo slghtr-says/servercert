@@ -767,7 +767,7 @@ If a Random Value is used, the CA SHALL provide a Random Value unique to the Cer
 
 CAs MAY operate domains for the purpose of assisting Applicants with this validation, and MAY instruct Applicants to add a CNAME record containing a Canonical Authorization Domain Name controlled by the CA. If the CA does so, the CA SHALL 
   i. ensure that each Canonical Authorization Domain Name is used for a unique Applicant, and not shared across multiple Applicants; and 
-  ii. complete the validation within 8 hours of peforming the DNS lookup; and
+  ii. complete the validation within 8 hours of performing the DNS lookup; and
   iii. restrict the usage of A and AAAA records in the CA operated DNS zone.
 
 **Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names.
