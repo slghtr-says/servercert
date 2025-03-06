@@ -809,6 +809,8 @@ If a Random Value is used, the CA SHALL provide a Random Value unique to the Cer
 
 CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe the same challenge information (i.e. Random Value or Request Token) as the Primary Network Perspective.
 
+If the CA or an Affiliate of the CA operates a DNS zone to which Applicants can delegate (via CNAME) their underscore-prefixed Domain Label, the CA MUST ensure that each Applicant delegates to a unique FQDN within that zone. A CA or Affiliate of a CA SHOULD NOT operate such a service, and SHOULD direct any Applicants using such a service to use the method described in [Section 3.2.2.4.22](#322422-dns-change-with-static-value) instead.
+
 **Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names.
 
 ##### 3.2.2.4.8 IP Address
@@ -989,6 +991,24 @@ Confirming the Applicant's control over the FQDN by performing the procedure doc
 The token (as defined in draft 00 of “Automated Certificate Management Environment (ACME) DNS Labeled With ACME Account ID Challenge,” Section 3.1) MUST NOT be used for more than 30 days from its creation. The CPS MAY specify a shorter validity period for the token, in which case the CA MUST follow its CPS.
 
 CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe the same token as the Primary Network Perspective.
+
+**Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names.
+
+##### 3.2.2.4.22 DNS Change with Static Value
+
+Confirming the Applicant's control over a FQDN by confirming the presence of a durable record identifying the Applicant in a DNS TXT record for an Authorization Domain Name.
+
+The CA MUST confirm the presence of a record containing the following whitespace-delimited tokens:
+- "ca=X", where X is an Issuer Domain Name disclosed by the CA in Section 4.2 of the CA's Certificate Policy and/or Certification Practices Statement;
+- "accounturi=X", where X is a unique URI (as described by RFC 8657, Section 3) identifying the account of the Applicant which requested validation for this FQDN; and
+- optionally "pubkey=X", where X is a base64-encoded DER public key (i.e. the body of a PEM "BEGIN PUBLIC KEY" block, with headers and whitespace removed) matching the public key provided by the Applicant in their certificate request.
+
+For example, the record might look like (using the EC P256 test key from RFC 9500, Section 2.3):
+TXT ca=example.com accounturi=https://example.com/acct/123 pubkey=MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQiVI+I+3gv+17KN0RFLHKh5Vj71vc75eSOkyMsxFxbFsTNEMTLjVuKFxOelIgsiZJXKZNCX0FBmrfpCkKklCcg==
+
+The CA MUST validate DNSSEC when querying for this record.
+
+CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe the same challenge information as the Primary Network Perspective.
 
 **Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names.
 
