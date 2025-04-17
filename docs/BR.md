@@ -996,7 +996,7 @@ CAs performing validations using this method MUST implement Multi-Perspective Is
 
 ##### 3.2.2.4.22 DNS Change with Static Value
 
-Confirming the Applicant's control over a FQDN by confirming the presence of a durable record identifying the Applicant in a DNS TXT record for an Authorization Domain Name.
+Confirming the Applicant's control over a FQDN by confirming the presence of a durable record identifying the Applicant in a DNS TXT record for an Authorization Domain Name that is prefixed with a Domain Label that begins with an underscore character.
 
 The CA MUST confirm the presence of a record containing the following whitespace-delimited tokens:
 - "ca=X", where X is an Issuer Domain Name disclosed by the CA in Section 4.2 of the CA's Certificate Policy and/or Certification Practices Statement;
