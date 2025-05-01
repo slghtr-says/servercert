@@ -1009,8 +1009,6 @@ CAs performing validations using this method MUST implement Multi-Perspective Is
 
 **Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names. If the CA issues a certificate for an FQDN using this method, it MUST do so within the TTL of the DNS TXT record, or 8 hours, whichever is greater.
 
-
-
 #### 3.2.2.5 Authentication for an IP Address
 
 This section defines the permitted processes and procedures for validating the Applicant’s ownership or control of an IP Address listed in a Certificate.
