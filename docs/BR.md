@@ -994,11 +994,11 @@ CAs performing validations using this method MUST implement Multi-Perspective Is
 
 **Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names.
 
-##### 3.2.2.4.22 DNS Change with Static Value
+##### 3.2.2.4.22 DNS Record with Static Value
 
 Confirming the Applicant's control over a FQDN by confirming the presence of a durable record identifying the Applicant in a DNS TXT record for an Authorization Domain Name that is prefixed with a Domain Label that begins with an underscore character.
 
-The CA MUST confirm the presence of a record containing the following whitespace-delimited tokens:
+The CA MUST confirm the presence of a TXT record containing the following whitespace-delimited tokens:
 - ca="X", where X is an Issuer Domain Name disclosed by the CA in Section 4.2 of the CA's Certificate Policy and/or Certification Practices Statement;
 - accounturi="Y", where Y is a unique URI (as described by RFC 8657, Section 3) identifying the account of the Applicant which requested validation for this FQDN.
 
@@ -1007,7 +1007,7 @@ TXT ca="example.com" accounturi="https://example.com/acct/123"
 
 CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe the same challenge information as the Primary Network Perspective.
 
-**Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names. If the CA issues a certificate for an FQDN using this method, it MUST do so within the TTL of the DNS TXT record, or 8 hours, whichever is greater.
+**Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names. If the DNS TXT record has a TTL less than the validation data reuse period (see Section 4.2.1), then the CA MUST consider the validation data reuse period to be equal to the TTL or 8 hours, whichever is greater.
 
 #### 3.2.2.5 Authentication for an IP Address
 
