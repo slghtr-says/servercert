@@ -998,12 +998,14 @@ CAs performing validations using this method MUST implement Multi-Perspective Is
 
 Confirming the Applicant's control over a FQDN by confirming the presence of a durable record identifying the Applicant in a DNS TXT record for an Authorization Domain Name that is prefixed with a Domain Label that begins with an underscore character.
 
-The CA MUST confirm the presence of a TXT record containing the following whitespace-delimited tokens:
-- ca="X", where X is an Issuer Domain Name disclosed by the CA in Section 4.2 of the CA's Certificate Policy and/or Certification Practices Statement;
-- accounturi="Y", where Y is a unique URI (as described by RFC 8657, Section 3) identifying the account of the Applicant which requested validation for this FQDN.
+The CA MUST confirm the presence of a TXT record whose RDATA value fulfills the following requirements:
+
+1. The RDATA value MUST conform to the `issue-value` syntax as defined in RFC 8659, section 4.2; and
+2. The `issuer-domain-name` value MUST be an Issuer Domain Name disclosed by the CA in Section 4.2 of the CA's Certificate Policy and/or Certification Practices Statement; and
+3. The `issue-value` MUST contain an `accounturi` parameter, where the parameter value is a unique URI (as described by RFC 8657, Section 3) identifying the account of the Applicant which requested validation for this FQDN.
 
 For example, the DNS TXT record might look like:
-TXT ca="example.com" accounturi="https://example.com/acct/123"
+TXT "example.com; accounturi=https://example.com/acct/123"
 
 CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe the same challenge information as the Primary Network Perspective.
 
