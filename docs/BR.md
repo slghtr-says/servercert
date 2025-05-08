@@ -353,6 +353,8 @@ The Definitions found in the CA/Browser Forum's Network and Certificate System S
 
 **DNS TXT Record Phone Contact**: The phone number defined in [Appendix A.2.2](#a22-dns-txt-record-phone-contact).
 
+**DNS TXT Record Static DCV Domain Label**: The Domain Label defined in [Appendix A.2.3](#a23-dns-txt-record-static-dcv-domain-label).
+
 **Domain Contact**: The Domain Name Registrant, technical contact, or administrative contact (or the equivalent under a ccTLD) as listed in the WHOIS record of the Base Domain Name or in a DNS SOA record, or as obtained through direct contact with the Domain Name Registrar.
 
 **Domain Label**: From RFC 8499 (<https://tools.ietf.org/html/rfc8499>): "An ordered list of zero or more octets that makes up a portion of a domain name. Using graph theory, a label identifies one node in a portion of the graph of all possible domain names."
@@ -996,7 +998,7 @@ CAs performing validations using this method MUST implement Multi-Perspective Is
 
 ##### 3.2.2.4.22 DNS TXT Record with Static Value
 
-Confirming the Applicant's control over a FQDN by confirming the presence of a durable record identifying the Applicant in a DNS TXT record for an Authorization Domain Name that is prefixed with a Domain Label that begins with an underscore character.
+Confirming the Applicant's control over a FQDN by confirming the presence of a durable record identifying the Applicant in a DNS TXT record for an Authorization Domain Name that is prefixed with one DNS TXT Record Static DCV Domain Label.
 
 The CA MUST confirm the presence of a TXT record containing the following whitespace-delimited tokens:
 - ca="X", where X is an Issuer Domain Name disclosed by the CA in Section 4.2 of the CA's Certificate Policy and/or Certification Practices Statement;
@@ -3870,6 +3872,10 @@ The DNS TXT record MUST be placed on the "`_validation-contactemail`" subdomain 
 ### A.2.2. DNS TXT Record Phone Contact
 
 The DNS TXT record MUST be placed on the "`_validation-contactphone`" subdomain of the domain being validated. The entire RDATA value of this TXT record MUST be a valid Global Number as defined in RFC 3966, Section 5.1.4, or it cannot be used.
+
+### A.2.3. DNS TXT Record Static DCV Domain Label
+
+The DNS TXT record MUST be placed on the "`_validation-static`" subdomain of the domain being validated.
 
 # APPENDIX B – Issuance of Certificates for Onion Domain Names
 
