@@ -1011,7 +1011,9 @@ TXT "example.com; accounturi=https://example.com/acct/123"
 
 CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe the same challenge information as the Primary Network Perspective.
 
-**Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names. If the DNS TXT record has a TTL less than the validation data reuse period (see [Section 4.2.1](#421-performing-identification-and-authentication-functions)), then the CA MUST consider the validation data reuse period to be equal to the TTL or 8 hours, whichever is greater.
+If the DNS TXT record has a TTL less than the validation data reuse period (see [Section 4.2.1](#421-performing-identification-and-authentication-functions)), then the CA MUST consider the validation data reuse period to be equal to the TTL or 8 hours, whichever is greater.
+
+**Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names. 
 
 #### 3.2.2.5 Authentication for an IP Address
 
