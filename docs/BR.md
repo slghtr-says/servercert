@@ -353,7 +353,7 @@ The Definitions found in the CA/Browser Forum's Network and Certificate System S
 
 **DNS TXT Record Phone Contact**: The phone number defined in [Appendix A.2.2](#a22-dns-txt-record-phone-contact).
 
-**DNS TXT Record Static DCV Domain Label**: The Domain Label defined in [Appendix A.2.3](#a23-dns-txt-record-static-dcv-domain-label).
+**DNS TXT Record Persistent DCV Domain Label**: The Domain Label defined in [Appendix A.2.3](#a23-dns-txt-record-persistent-dcv-domain-label).
 
 **Domain Contact**: The Domain Name Registrant, technical contact, or administrative contact (or the equivalent under a ccTLD) as listed in the WHOIS record of the Base Domain Name or in a DNS SOA record, or as obtained through direct contact with the Domain Name Registrar.
 
@@ -811,7 +811,7 @@ If a Random Value is used, the CA SHALL provide a Random Value unique to the Cer
 
 CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe the same challenge information (i.e. Random Value or Request Token) as the Primary Network Perspective.
 
-If the CA or an Affiliate of the CA operates a DNS zone to which Applicants can delegate (via CNAME) their underscore-prefixed Domain Label, the CA MUST ensure that each Applicant delegates to a unique FQDN within that zone. A CA or Affiliate of a CA SHOULD NOT operate such a service, and SHOULD direct any Applicants using such a service to use the method described in [Section 3.2.2.4.22](#322422-dns-change-with-static-value) instead.
+If the CA or an Affiliate of the CA operates a DNS zone to which Applicants can delegate (via CNAME) their underscore-prefixed Domain Label, the CA MUST ensure that each Applicant delegates to a unique FQDN within that zone. A CA or Affiliate of a CA SHOULD NOT operate such a service, and SHOULD direct any Applicants using such a service to use the method described in [Section 3.2.2.4.22](#322422-dns-change-with-persistent-value) instead.
 
 **Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names.
 
@@ -996,9 +996,9 @@ CAs performing validations using this method MUST implement Multi-Perspective Is
 
 **Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names.
 
-##### 3.2.2.4.22 DNS TXT Record with Static Value
+##### 3.2.2.4.22 DNS TXT Record with Persistent Value
 
-Confirming the Applicant's control over a FQDN by confirming the presence of a durable record identifying the Applicant in a DNS TXT record for an Authorization Domain Name that is prefixed with one DNS TXT Record Static DCV Domain Label.
+Confirming the Applicant's control over a FQDN by confirming the presence of a persistent record identifying the Applicant in a DNS TXT record for an Authorization Domain Name that is prefixed with one DNS TXT Record Persistent DCV Domain Label.
 
 The CA MUST confirm the presence of a TXT record whose RDATA value fulfills the following requirements:
 
@@ -3875,9 +3875,9 @@ The DNS TXT record MUST be placed on the "`_validation-contactemail`" subdomain 
 
 The DNS TXT record MUST be placed on the "`_validation-contactphone`" subdomain of the domain being validated. The entire RDATA value of this TXT record MUST be a valid Global Number as defined in RFC 3966, Section 5.1.4, or it cannot be used.
 
-### A.2.3. DNS TXT Record Static DCV Domain Label
+### A.2.3. DNS TXT Record Persistent DCV Domain Label
 
-The DNS TXT record MUST be placed on the "`_validation-static`" subdomain of the domain being validated.
+The DNS TXT record MUST be placed on the "`_validation-persist`" subdomain of the domain being validated.
 
 # APPENDIX B – Issuance of Certificates for Onion Domain Names
 
