@@ -1007,7 +1007,7 @@ The CA MUST confirm the presence of a TXT record whose RDATA value fulfills the 
 3. The `issue-value` MUST contain an `accounturi` parameter, where the parameter value is a unique URI (as described by RFC 8657, Section 3) identifying the account of the Applicant which requested validation for this FQDN.
 
 For example, the DNS TXT record might look like:
-TXT "example.com; accounturi=https://example.com/acct/123"
+TXT "authority.example; accounturi=https://authority.example/acct/123"
 
 CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe the same challenge information as the Primary Network Perspective.
 
