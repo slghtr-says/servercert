@@ -3926,7 +3926,7 @@ The DNS TXT record MUST be placed on the "`_validation-contactphone`" subdomain 
 
 ### A.2.3. DNS TXT Record Persistent DCV Domain Label
 
-The DNS TXT record MUST be placed on the "`_validation-persist`" subdomain of the domain being validated.
+The DNS TXT record MUST be placed at the "_validation-persist" label prepended to the Authorization Domain Name being validated.
 
 # APPENDIX B – Issuance of Certificates for Onion Domain Names
 
