@@ -1023,6 +1023,26 @@ CAs performing validations using this method MUST implement Multi-Perspective Is
 
 If the DNS TXT record has a TTL less than the validation data reuse period (see [Section 4.2.1](#421-performing-identification-and-authentication-functions)), then the CA MUST consider the validation data reuse period to be equal to the TTL or 8 hours, whichever is greater.
 
+The following table shows how the `persistUntil` parameter affects whether a DNS record can be used for validation at different points in time:
+
+Table: Examples of how the `persistUntil` parameter affects validation
+
+| __Date/time of validation__ | __persistUntil__ | __Usable for validation__ | __Explanation__ |
+|----------------------------|------------------|--------------------------|----------------|
+| 2025-06-15T12:00:00Z | 2026-01-01T00:00:00Z (1767225600) | Yes | Validation time is before persistUntil timestamp, so record is usable |
+| 2025-06-15T12:00:00Z | 2025-01-01T00:00:00Z (1735689600) | No | Validation time is after persistUntil timestamp, so record is not usable |
+| 2025-06-15T12:00:00Z | (not present) | Yes | No persistUntil parameter present, so no time restriction applies |
+
+The following table shows how the DNS TXT record TTL affects the validation data reuse period:
+
+Table: Examples of how the TTL affects the validation data reuse period
+
+| __Record TTL__ | __Maximum data reuse period ([Section 4.2.1](#421-performing-identification-and-authentication-functions))__ | __Effective validation data reuse period__ | __Explanation__ |
+|---------------|------------------------------------------------------------------------------------------------------------------------|------------------------------------------|----------------|
+| 14400 (4 hours) | 200 days | 28800 seconds (8 hours) | TTL is below 8-hour minimum, so minimum 8 hours applies |
+| 86400 (24 hours) | 200 days | 86400 seconds (24 hours) | TTL is greater than minimum but less than maximum, so TTL applies |
+| 20736000 (240 days) | 200 days | 17280000 seconds (200 days) | TTL exceeds 200-day maximum, so maximum 200 days applies |
+
 **Note**: Once the FQDN has been validated using this method, the CA MAY also issue Certificates for other FQDNs that end with all the Domain Labels of the validated FQDN. This method is suitable for validating Wildcard Domain Names. 
 
 #### 3.2.2.5 Authentication for an IP Address
