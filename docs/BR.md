@@ -1021,7 +1021,7 @@ _validation-persist.example.com IN TXT "authority.example; accounturi=https://au
 
 CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe the same challenge information as the Primary Network Perspective.
 
-If the DNS TXT record has a TTL less than the validation data reuse period (see [Section 4.2.1](#421-performing-identification-and-authentication-functions)), then the CA MUST consider the validation data reuse period to be equal to the TTL or 8 hours, whichever is greater.
+If the DNS TXT record has a TTL less than the validation data reuse period (see [Section 4.2.1](#421-performing-identification-and-authentication-functions)), then the CA MUST consider the validation data reuse period to be equal to the TTL or 8 hours, whichever is greater. If the `persistUntil` parameter is present and its value is less than the sum of the record retrieval time and the TTL, then the record MUST NOT be used for validation.
 
 The following table shows how the `persistUntil` parameter affects whether a DNS record can be used for validation at different points in time:
 
