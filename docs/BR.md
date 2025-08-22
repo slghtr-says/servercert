@@ -1144,6 +1144,16 @@ Confirming the Applicant's control over the IP Address by performing the procedu
 
 CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe the same challenge information (i.e. token) as the Primary Network Perspective.
 
+##### 3.2.2.5.8 DNS TXT Record with Persistent Value in the Reverse Namespace
+
+Confirming the Applicant's control over an IP address by 
+
+1. Constructing an Authorization Domain Name that consists of the reverse zone base domain of the IP address (as defined in RFC 1035 and RFC 3596) and prefixing it with one DNS TXT Record Persistent DCV Domain Label (e.g. _validation-persist.1.2.3.4.in-addr.arpa), and
+
+2. Verifying control over the Authorization Domain Name as defined in [Section 3.2.2.4.22](#322422-dns-txt-record-with-persistent-value).
+
+The CA MUST NOT follow CNAME or DNAME aliases when resolving the TXT record at the Authorization Domain Name; the TXT record to be validated MUST be located at that exact label.
+
 #### 3.2.2.6 Wildcard Domain Validation
 
 Before issuing a Wildcard Certificate, the CA MUST establish and follow a documented procedure that determines if the FQDN portion of any
