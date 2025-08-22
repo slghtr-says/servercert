@@ -1144,6 +1144,24 @@ Confirming the Applicant's control over the IP Address by performing the procedu
 
 CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe the same challenge information (i.e. token) as the Primary Network Perspective.
 
+##### 3.2.2.5.8 DNS TXT Record with Persistent Value in the Reverse Namespace
+
+Confirming the Applicant's control over an IP address by confirming the presence of a persistent record identifying the Applicant in a DNS TXT record for an Authorization Domain Name that consists of the reverse zone base domain of the IP address (as defined in RFC 1035 and RFC 3596) that is prefixed with one DNS TXT Record Persistent DCV Domain Label.
+
+The CA MUST confirm the presence of a TXT record whose RDATA value fulfills the following requirements:
+
+1. The RDATA value MUST conform to the `issue-value` syntax as defined in RFC 8659, section 4.2; and
+2. The `issuer-domain-name` value MUST be an Issuer Domain Name disclosed by the CA in Section 4.2 of the CA's Certificate Policy and/or Certification Practices Statement; and
+3. The `issue-value` MUST contain an `accounturi` parameter, where the parameter value is a unique URI (as described by RFC 8657, Section 3) identifying the account of the Applicant which requested validation for this IP address; and
+4. The `issue-value` MAY contain a `persistUntil` parameter. If present, the parameter value MUST be a base-10 encoded integer representing a UNIX timestamp (the number of seconds since 1970-01-01T00:00:00Z ignoring leap seconds). CAs MUST interpret the `persistUntil` parameter as defined in [Section 3.2.2.4.22](#322422-dns-txt-record-with-persistent-value).
+5. The `issue-value` MAY contain additional parameters. CAs MUST ignore any unknown parameter keys.
+
+The CA MUST NOT follow CNAME or DNAME aliases when resolving the TXT record at the Authorization Domain Name; the TXT record to be validated MUST be located at that exact label.
+
+CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe the same challenge information as the Primary Network Perspective.
+
+If the DNS TXT record has a TTL less than the validation data reuse period (see [Section 4.2.1](#421-performing-identification-and-authentication-functions)), then the CA MUST consider the validation data reuse period to be equal to the TTL or 8 hours, whichever is greater.
+
 #### 3.2.2.6 Wildcard Domain Validation
 
 Before issuing a Wildcard Certificate, the CA MUST establish and follow a documented procedure that determines if the FQDN portion of any
