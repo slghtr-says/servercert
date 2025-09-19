@@ -1037,7 +1037,7 @@ CAs performing validations using this method MUST implement Multi-Perspective Is
 
 ##### 3.2.2.4.22 DNS TXT Record with Persistent Value
 
-Confirming the Applicant's control over a FQDN by verifying the presence of a Persistent DCV TXT Record identifying the Applicant. The record MUST be placed at the "`_validation-persist`" label prepended to the Authorization Domain Name being validated (i.e., "`_validation-persist.[Authorization Domain Name]`"). The CA MUST NOT use the FQDN returned from a DNS CNAME lookup as the FQDN for the purposes of domain validation. CNAME records MAY be followed when resolving the Persistent DCV TXT Record.
+Confirming the Applicant's control over a FQDN by verifying the presence of a Persistent DCV TXT Record identifying the Applicant. The record MUST be placed at the "`_validation-persist`" label prepended to the Authorization Domain Name being validated (i.e., "`_validation-persist.[Authorization Domain Name]`"). For this method, the CA MUST NOT use the FQDN returned from a DNS CNAME lookup as the FQDN for the purposes of domain validation. This prohibition overrides the Authorization Domain Name definition. CNAME records MAY be followed when resolving the Persistent DCV TXT Record.
 
 The CA MUST confirm the Persistent DCV TXT Record’s RDATA value fulfills the following requirements:
 
