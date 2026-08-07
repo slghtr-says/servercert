@@ -575,6 +575,8 @@ FIPS 140-3, Federal Information Processing Standards Publication - Security Requ
 
 FIPS 186-5, Federal Information Processing Standards Publication - Digital Signature Standard (DSS), Information Technology Laboratory, National Institute of Standards and Technology, February 2023.
 
+FIPS 204, Federal Information Processing Standards Publication - Module-Lattice-Based Digital Signature Standard, Information Technology Laboratory, National Institute of Standards and Technology, August 2024.
+
 ISO 21188:2018, Public key infrastructure for financial services -- Practices and policy framework.
 
 Network and Certificate System Security Requirements, Version 1.7, available at <https://cabforum.org/network-security-requirements/>
@@ -2090,8 +2092,9 @@ For ECDSA key pairs, the CA SHALL:
 
 For ML-DSA key pairs, the CA SHALL:
 
-- Ensure that the key uses one of the following parameter sets:
-  - ML-DSA-44 (OID: 2.16.840.1.101.3.4.3.17), or
+- Ensure that the key uses one of the following parameter sets, as specified in FIPS 204:
+  - ML-DSA-44 (OID: 2.16.840.1.101.3.4.3.17),
+  - ML-DSA-65 (OID: 2.16.840.1.101.3.4.3.18), or
   - ML-DSA-87 (OID: 2.16.840.1.101.3.4.3.19).
 
 No other algorithms or key sizes are permitted.
@@ -2102,7 +2105,7 @@ RSA: The CA SHALL confirm that the value of the public exponent is an odd number
 
 ECDSA: The CA SHOULD confirm the validity of all keys using either the ECC Full Public Key Validation Routine or the ECC Partial Public Key Validation Routine. [Source: Sections 5.6.2.3.2 and 5.6.2.3.3, respectively, of NIST SP 800-56A: Revision 2]
 
-ML-DSA: No stipulation.
+ML-DSA: The CA SHALL confirm that the public key is a valid encoding for the specified parameter set per FIPS 204.
 
 ### 6.1.7 Key usage purposes (as per X.509 v3 key usage field)
 
@@ -3430,15 +3433,19 @@ When encoded, the `AlgorithmIdentifier` for ECDSA keys MUST be byte-for-byte ide
 
 ##### 7.1.3.1.3 ML-DSA
 
-The CA SHALL indicate an ML-DSA key using one of the following algorithm identifiers below:
+The CA SHALL indicate an ML-DSA key using one of the following algorithm identifiers:
 
-- ML-DSA-44 (OID: 2.16.840.1.101.3.4.3.17).
+- id-ml-dsa-44 (OID: 2.16.840.1.101.3.4.3.17),
+- id-ml-dsa-65 (OID: 2.16.840.1.101.3.4.3.18), or
+- id-ml-dsa-87 (OID: 2.16.840.1.101.3.4.3.19).
 
-The parameters for ML-DSA keys SHALL be absent. The CA MUST NOT use HashML-DSA; only "pure" ML-DSA is permitted. Additionally, the CA SHALL NOT use this algorithm if the algorithm identifier of the Certificate's signature algorithm is not ML-DSA-87 (OID: 2.16.840.1.101.3.4.3.19) or ML-DSA-44 (OID: 2.16.840.1.101.3.4.3.17).
+The parameters for ML-DSA keys SHALL be absent. The CA MUST NOT use HashML-DSA, as specified in FIPS 204; only "pure" ML-DSA is permitted. Additionally, the CA SHALL NOT use these algorithm identifiers if the algorithm identifier of the Certificate's signature algorithm is not one of id-ml-dsa-44 (OID: 2.16.840.1.101.3.4.3.17), id-ml-dsa-65 (OID: 2.16.840.1.101.3.4.3.18), or id-ml-dsa-87 (OID: 2.16.840.1.101.3.4.3.19).
 
-When encoded, the AlgorithmIdentifier for ML-DSA keys SHALL be byte-for-byte identical with the following hex-encoded bytes:
+When encoded, the `AlgorithmIdentifier` for ML-DSA keys MUST be byte-for-byte identical with the following hex-encoded bytes:
 
-- For ML-DSA-44, `300b0609608648016503040311`.
+- For id-ml-dsa-44, `300b0609608648016503040311`.
+- For id-ml-dsa-65, `300b0609608648016503040312`.
+- For id-ml-dsa-87, `300b0609608648016503040313`.
 
 #### 7.1.3.2 Signature AlgorithmIdentifier
 
@@ -3550,11 +3557,15 @@ If the signing key is P-521, the signature MUST use ECDSA with SHA-512. When enc
 
 ##### 7.1.3.2.3 ML-DSA
 
-The CA SHALL use the appropriate signature algorithm and encoding based upon the signing key used. Additionally, the CA SHALL NOT use this signature algorithm if the algorithm identifier of the public key being certified is not id-ml-dsa-44 (OID: 2.16.840.1.101.3.4.3.17).
+The CA SHALL use the appropriate signature algorithm and encoding based upon the signing key used.
 
-If the signing key is ML-DSA-44, the signature algorithm SHALL be id-ml-dsa-44 (OID: 2.16.840.1.101.3.4.3.17). When encoded, the `AlgorithmIdentifier` SHALL be byte-for-byte identical with the following hex-encoded bytes: `300b0609608648016503040311`.
+If the signing key is ML-DSA-44, the signature algorithm MUST be id-ml-dsa-44 (OID: 2.16.840.1.101.3.4.3.17). When encoded, the `AlgorithmIdentifier` MUST be byte-for-byte identical with the following hex-encoded bytes: `300b0609608648016503040311`.
 
-If the signing key is ML-DSA-87, the signature algorithm SHALL be id-ml-dsa-87 (OID: 2.16.840.1.101.3.4.3.19). When encoded, the `AlgorithmIdentifier` SHALL be byte-for-byte identical with the following hex-encoded bytes: `300b0609608648016503040313`.
+If the signing key is ML-DSA-65, the signature algorithm MUST be id-ml-dsa-65 (OID: 2.16.840.1.101.3.4.3.18). When encoded, the `AlgorithmIdentifier` MUST be byte-for-byte identical with the following hex-encoded bytes: `300b0609608648016503040312`.
+
+If the signing key is ML-DSA-87, the signature algorithm MUST be id-ml-dsa-87 (OID: 2.16.840.1.101.3.4.3.19). When encoded, the `AlgorithmIdentifier` MUST be byte-for-byte identical with the following hex-encoded bytes: `300b0609608648016503040313`.
+
+If used within a Certificate or Precertificate, such as the `signatureAlgorithm` field of a Certificate or the `signature` field of a TBSCertificate, the CA SHALL NOT use these signature algorithms unless the algorithm identifier of the public key being certified is one of id-ml-dsa-44 (OID: 2.16.840.1.101.3.4.3.17), id-ml-dsa-65 (OID: 2.16.840.1.101.3.4.3.18), or id-ml-dsa-87 (OID: 2.16.840.1.101.3.4.3.19). This restriction does not apply if used within a CRL, such as the `signatureAlgorithm` field of a CertificateList, or within an OCSP response, such as the `signatureAlgorithm` of a BasicOCSPResponse, as these objects do not certify a public key.
 
 ### 7.1.4 Name Forms
 
