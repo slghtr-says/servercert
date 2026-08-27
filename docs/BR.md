@@ -3439,7 +3439,7 @@ The CA SHALL indicate an ML-DSA key using one of the following algorithm identif
 - id-ml-dsa-65 (OID: 2.16.840.1.101.3.4.3.18), or
 - id-ml-dsa-87 (OID: 2.16.840.1.101.3.4.3.19).
 
-The parameters for ML-DSA keys SHALL be absent. The CA MUST NOT use HashML-DSA, as specified in FIPS 204; only "pure" ML-DSA is permitted. Additionally, the CA SHALL NOT use these algorithm identifiers if the algorithm identifier of the Certificate's signature algorithm is not one of id-ml-dsa-44 (OID: 2.16.840.1.101.3.4.3.17), id-ml-dsa-65 (OID: 2.16.840.1.101.3.4.3.18), or id-ml-dsa-87 (OID: 2.16.840.1.101.3.4.3.19).
+The parameters for ML-DSA keys SHALL be absent. The CA MUST NOT use HashML-DSA, as specified in FIPS 204; only "pure" ML-DSA is permitted.
 
 When encoded, the `AlgorithmIdentifier` for ML-DSA keys MUST be byte-for-byte identical with the following hex-encoded bytes:
 
@@ -3564,8 +3564,6 @@ If the signing key is ML-DSA-44, the signature algorithm MUST be id-ml-dsa-44 (O
 If the signing key is ML-DSA-65, the signature algorithm MUST be id-ml-dsa-65 (OID: 2.16.840.1.101.3.4.3.18). When encoded, the `AlgorithmIdentifier` MUST be byte-for-byte identical with the following hex-encoded bytes: `300b0609608648016503040312`.
 
 If the signing key is ML-DSA-87, the signature algorithm MUST be id-ml-dsa-87 (OID: 2.16.840.1.101.3.4.3.19). When encoded, the `AlgorithmIdentifier` MUST be byte-for-byte identical with the following hex-encoded bytes: `300b0609608648016503040313`.
-
-If used within a Certificate or Precertificate, such as the `signatureAlgorithm` field of a Certificate or the `signature` field of a TBSCertificate, the CA SHALL NOT use these signature algorithms unless the algorithm identifier of the public key being certified is one of id-ml-dsa-44 (OID: 2.16.840.1.101.3.4.3.17), id-ml-dsa-65 (OID: 2.16.840.1.101.3.4.3.18), or id-ml-dsa-87 (OID: 2.16.840.1.101.3.4.3.19). This restriction does not apply if used within a CRL, such as the `signatureAlgorithm` field of a CertificateList, or within an OCSP response, such as the `signatureAlgorithm` of a BasicOCSPResponse, as these objects do not certify a public key.
 
 ### 7.1.4 Name Forms
 
