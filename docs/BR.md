@@ -200,6 +200,7 @@ The following Certificate Policy identifiers are reserved for use by CAs to asse
 | 2027-03-15 | [6.3.2](#632-certificate-operational-periods-and-key-pair-usage-periods) | Maximum validity period of Subscriber Certificates is 100 days. |
 | 2027-03-15 | [4.2.2.1.2](#42212-caa-parameters) | CAs MUST process the `accounturi` and `validationmethods` parameters as specified in [RFC 8657](https://datatracker.ietf.org/doc/html/rfc8657). |
 | 2027-03-15 | [4.2.2.1.2](#42212-caa-parameters) | If the CA does not identify the Subscriber account via an ACME Account URL as described in [RFC 8555](https://datatracker.ietf.org/doc/html/rfc8555), the CA MUST define the supported format of the `accounturi` in Section 4.2 of their CP and/or CPS, and SHOULD comply with the `acct` URI scheme defined in [RFC 7565](https://datatracker.ietf.org/doc/html/rfc7565) |
+| 2027-09-15 | [3.2.2.4.22](#322422-dns-txt-record-with-persistent-value) | CAs MUST match Persistent DCV TXT Record parameter keys using ASCII case-insensitive comparison. |
 | 2028-03-15 | [3.2.2.4](#3224-validation-of-domain-authorization-or-control) and [3.2.2.5](#3225-authentication-for-an-ip-address) | CAs MUST NOT rely on Methods 3.2.2.4.4, 3.2.2.4.13, and 3.2.2.4.14 to issue Subscriber Certificates. |
 | 2029-03-15 | [4.2.1](#421-performing-identification-and-authentication-functions) | Domain Name and IP Address validation maximum data reuse period is 10 days. |
 | 2029-03-15 | [6.3.2](#632-certificate-operational-periods-and-key-pair-usage-periods) | Maximum validity period of Subscriber Certificates is 47 days. |
@@ -415,7 +416,7 @@ The Definitions found in the CA/Browser Forum's Network and Certificate System S
 
 **Pending Prohibition**: The use of a behavior described with this label is highly discouraged, as it is planned to be deprecated and will likely be designated as MUST NOT in the future.
 
-**Persistent DCV TXT Record**: A DNS TXT record identifying an Applicant in accordance with [Section 3.2.2.4.22](#322422-dns-txt-record-with-persistent-value).
+**Persistent DCV TXT Record**: A DNS TXT record identifying an Applicant in accordance with [Section 3.2.2.4.22](#322422-dns-txt-record-with-persistent-value) or [Section 3.2.2.4.23](#322423-dns-txt-record-with-persistent-value---acme).
 
 **Precertificate**: A Precertificate is a signed data structure that can be submitted to a Certificate Transparency log, as defined by [RFC 6962](https://datatracker.ietf.org/doc/html/rfc6962) and containing the critical poison extension (OID: 1.3.6.1.4.1.11129.2.4.3).
 
@@ -774,6 +775,7 @@ The CA MUST follow this process when choosing the Authorization Domain Name (ADN
 | 3.2.2.4.20 TLS Using ALPN                                  | - | - | - | ✔ |
 | 3.2.2.4.21 DNS Labeled with Account ID - ACME              | ✔ | ✔ | - | - |
 | 3.2.2.4.22 DNS TXT Record with Persistent Value            | ✔ | ✔ | - | - |
+| 3.2.2.4.23 DNS TXT Record with Persistent Value - ACME     | ✔ | ✔ | - | - |
 | Appendix B.2.b                                             | ✔ | ✔ | - | ✔ |
 
 When the ADN is an Onion Domain Name, the CA SHALL validate it in accordance with Appendix B.
@@ -1025,7 +1027,7 @@ The CA MUST confirm the Persistent DCV TXT Record's RDATA value fulfills the fol
 2. The `issuer-domain-name` value MUST be an Issuer Domain Name disclosed by the CA in Section 4.2 of the CA's Certificate Policy and/or Certification Practices Statement; and
 3. The `issue-value` MUST contain an `accounturi` parameter, where the parameter value is a unique URI (as described by [RFC 8657, Section 3](https://datatracker.ietf.org/doc/html/rfc8657#section-3)) identifying the account of the Applicant which requested validation for this FQDN; and
 4. The `issue-value` MAY contain a `persistUntil` parameter. If present, the parameter value MUST be a base-10 encoded integer representing a UNIX timestamp (the number of seconds since 1970-01-01T00:00:00Z ignoring leap seconds); and
-5. The `issue-value` MAY contain additional parameters. CAs MUST ignore any unknown parameter keys.
+5. The `issue-value` MAY contain additional parameters. CAs MUST ignore any unknown parameter keys. CAs MAY match parameter keys using ASCII case-insensitive comparison (e.g., `persistuntil` and `PERSISTUNTIL` match the `persistUntil` parameter key and are not unknown parameter keys). *Effective 2027-09-15*, CAs MUST match parameter keys using ASCII case-insensitive comparison.
 
 If the `persistUntil` parameter is present, the CA MUST evaluate its value. If the time of the check is after the time specified in the `persistUntil` parameter value, the CA MUST NOT use the record as evidence of the Applicant's control over the FQDN.
 
@@ -1045,6 +1047,24 @@ Table: Examples of how the `persistUntil` parameter affects validation
 | 2025-06-15T12:00:00Z | (not present) | Yes | No persistUntil parameter present, so no time restriction applies |
 
 CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe a Persistent DCV TXT Record that demonstrates the Applicant's control over the domain and contains the same `accounturi` parameter as the Primary Network Perspective.
+
+##### 3.2.2.4.23 DNS TXT Record with Persistent Value - ACME
+
+Confirming the Applicant's control over the ADN by performing the procedure documented for a "dns-persist-01" challenge in draft 02 of "Automated Certificate Management Environment (ACME) Challenge for Persistent DNS TXT Record Validation," available at [https://datatracker.ietf.org/doc/draft-ietf-acme-dns-persist/](https://datatracker.ietf.org/doc/draft-ietf-acme-dns-persist/).
+
+A validation completed using this method MUST also satisfy the requirements of [Section 3.2.2.4.22](#322422-dns-txt-record-with-persistent-value).
+
+The CA MUST NOT rely on a validation completed using this method for a Wildcard Domain Name or for an applied-for FQDN that is not equal to the ADN, unless the Persistent DCV TXT Record contains a `policy` parameter with the value `wildcard` as specified in draft 02 of "Automated Certificate Management Environment (ACME) Challenge for Persistent DNS TXT Record Validation," Sections 5 and 6.
+
+For this method, the `accounturi` parameter in the Persistent DCV TXT Record MUST identify the ACME account requesting validation as specified in draft 02 of "Automated Certificate Management Environment (ACME) Challenge for Persistent DNS TXT Record Validation," Section 4.1.
+
+For this method, the CA MUST match parameter keys in the Persistent DCV TXT Record using ASCII case-insensitive comparison.
+
+The CA MUST disclose in Section 4.2 of its Certificate Policy and/or Certification Practice Statement the `accountHashPrefix` it advertises, each hash algorithm it accepts in addition to `sha-256`, and the stability guarantees for its `accountHashPrefix` and account URLs, as documented in accordance with draft 02 of "Automated Certificate Management Environment (ACME) Challenge for Persistent DNS TXT Record Validation," Sections 4.1 and 4.5.
+
+For the purposes of [Section 4.2.1](#421-performing-identification-and-authentication-functions), CAs MUST consider 10 days as the maximum validation data reuse period for validations completed using this method.
+
+CAs performing validations using this method MUST implement Multi-Perspective Issuance Corroboration as specified in [Section 3.2.2.9](#3229-multi-perspective-issuance-corroboration). To count as corroborating, a Network Perspective MUST observe a Persistent DCV TXT Record that satisfies the requirements of this method for the requesting ACME account and contains the same `accounturi` parameter as the record relied upon by the Primary Network Perspective. If the CA relies on a `policy` parameter with the value `wildcard`, the record observed by the corroborating Network Perspective MUST also contain that parameter value.
 
 #### 3.2.2.5 Authentication for an IP Address
 
